@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7392255243998862027}
-  - component: {fileID: 7360402868811864001}
-  m_Layer: 0
+  - component: {fileID: 1530156820833443864}
+  m_Layer: 6
   m_Name: Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 8325884915755683736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7360402868811864001
+--- !u!114 &1530156820833443864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03bdd3a3e8514ff7bbd8a195020b281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Slot
+  render: {fileID: 8052768745518753453}
+  hightLightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &3282923547992283818
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,7 +58,8 @@ GameObject:
   - component: {fileID: 8325884915755683736}
   - component: {fileID: 4283636138377447569}
   - component: {fileID: 8052768745518753453}
-  m_Layer: 0
+  - component: {fileID: 4539563410015152342}
+  m_Layer: 6
   m_Name: SlotRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,3 +138,25 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4539563410015152342
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3282923547992283818}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4575734979276873811, guid: cd6af039c671a384f8e6644b12f7a4e5, type: 3}
