@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class Direction : MonoBehaviour
+public static class Direction
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   public static Vector2Int[] Direct = new Vector2Int[]
+   {
+      new Vector2Int(0,1),
+      new Vector2Int(1,0),
+      new Vector2Int(0,-1),
+      new Vector2Int(-1,-1),
+      new Vector2Int(-1,0),
+      new Vector2Int(-1,1)
+   };
 }

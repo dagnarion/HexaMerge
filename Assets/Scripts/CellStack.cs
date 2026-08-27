@@ -5,6 +5,27 @@ public class CellStack : MonoBehaviour
 {
     private List<Cell> cellHolder = new List<Cell>();
 
+    public Cell GetTopCell()
+    {
+        if (IsEmpty())
+        {
+            Debug.LogWarning("There were no element in cell");
+            return null;
+        }
+
+        return cellHolder[^1];
+    }
+
+    public Cell GetBottomCell()
+    {
+        if (IsEmpty())
+        {
+            Debug.LogWarning("There were no element in cell");
+            return null;
+        }
+        return cellHolder[0];
+    }
+    
     public void CanSelect()
     {
         foreach (var it in cellHolder)

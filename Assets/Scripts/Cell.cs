@@ -12,6 +12,10 @@ public class Cell : MonoBehaviour
 
     public void SetParent(Transform parent) => transform.SetParent(parent);
 
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position; // sau dottwen vao
+    }
     public void UnSelect() => collider.enabled = false;
     public void CanSelect() => collider.enabled = true;
     

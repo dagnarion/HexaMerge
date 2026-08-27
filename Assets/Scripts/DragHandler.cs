@@ -13,7 +13,8 @@ public class DragHandler : MonoBehaviour
     private Camera mainCamera;
     private CellStack currentStack;
     private Vector3 oldPosition;
-    public event Action<CellStack> OnPlaced;
+    private Vector3 currentPoint;
+    public event Action<Vector3Int,CellStack> OnPlaced;
     private void Start()
     {
         mainCamera = Camera.main;
@@ -83,9 +84,10 @@ public class DragHandler : MonoBehaviour
 
         currentStack.transform.position = currentSlot.transform.position.With(y: currentSlot.transform.position.y + .2f);
         currentSlot?.SetPlacedState(false);
-        OnPlaced?.Invoke(currentStack);
+        OnPlaced?.Invoke(gridController.ConvertWorldPositionToCellPosition(currentPoint),currentStack);
         currentStack.UnSelect();
         currentStack.SetParent(currentSlot.transform);
+        currentSlot.FillCellStack(currentStack);
         currentSlot = null;
         currentStack = null;
     }
@@ -97,6 +99,7 @@ public class DragHandler : MonoBehaviour
         Physics.Raycast(getMouseRay(), out ray, 500, groundLayer);
         Vector3 targetPos = ray.point.With(y: 2);
         currentStack.transform.position = targetPos;
+        currentPoint = ray.point;
     }
 
 
