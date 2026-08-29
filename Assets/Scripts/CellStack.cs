@@ -5,26 +5,13 @@ public class CellStack : MonoBehaviour
 {
     private List<Cell> cellHolder = new List<Cell>();
 
-    public Cell GetTopCell()
+    public Cell GetCell(int index)
     {
-        if (IsEmpty())
-        {
-            Debug.LogWarning("There were no element in cell");
-            return null;
-        }
-
-        return cellHolder[^1];
+        if (index >= cellHolder.Count) return null;
+        return cellHolder[index];
     }
-
-    public Cell GetBottomCell()
-    {
-        if (IsEmpty())
-        {
-            Debug.LogWarning("There were no element in cell");
-            return null;
-        }
-        return cellHolder[0];
-    }
+    
+    public int GetStackSize() => cellHolder.Count;
     
     public void CanSelect()
     {
@@ -59,4 +46,6 @@ public class CellStack : MonoBehaviour
     }
 
     public bool IsEmpty() => cellHolder.Count <= 0;
+    
+    
 }

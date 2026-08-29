@@ -14,7 +14,7 @@ public class DragHandler : MonoBehaviour
     private CellStack currentStack;
     private Vector3 oldPosition;
     private Vector3 currentPoint;
-    public event Action<Vector3Int,CellStack> OnPlaced;
+    public event Action<Vector3Int> OnPlaced;
     private void Start()
     {
         mainCamera = Camera.main;
@@ -45,7 +45,7 @@ public class DragHandler : MonoBehaviour
         RaycastHit ray;
         Physics.Raycast(getMouseRay(), out ray, 500, slotLayer);
         FollowHandle();
-
+        
         
         if (ray.collider == null)
         {
@@ -53,9 +53,7 @@ public class DragHandler : MonoBehaviour
             currentSlot = null;
             return;
         }
-        
         Slot slot = gridController.Grid.GetValue(gridController.ConvertWorldPositionToCellPosition(ray.point));
-        
         if (currentSlot != slot)
         {
             currentSlot?.Deselected();
@@ -83,11 +81,10 @@ public class DragHandler : MonoBehaviour
         }
 
         currentStack.transform.position = currentSlot.transform.position.With(y: currentSlot.transform.position.y + .2f);
-        currentSlot?.SetPlacedState(false);
-        OnPlaced?.Invoke(gridController.ConvertWorldPositionToCellPosition(currentPoint),currentStack);
         currentStack.UnSelect();
         currentStack.SetParent(currentSlot.transform);
-        currentSlot.FillCellStack(currentStack);
+        currentSlot.SetCellStack(currentStack);
+        OnPlaced?.Invoke(gridController.ConvertWorldPositionToCellPosition(currentPoint));
         currentSlot = null;
         currentStack = null;
     }

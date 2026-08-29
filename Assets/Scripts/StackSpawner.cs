@@ -31,7 +31,7 @@ public class StackSpawner : MonoBehaviour
         dragHandler.OnPlaced += SpawnCell;
     }
 
-    public void SpawnCell(Vector3Int pos,CellStack currentStack)
+    public void SpawnCell(Vector3Int pos)
     {
         count++;
         if (count >= 3)

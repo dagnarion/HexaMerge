@@ -32,29 +32,15 @@ public class Grid<T>
     
     public T GetValue(Vector3Int pos)
     {
-        if (!IsOnGrid(pos))
-        {
-            Debug.LogWarning($"[Grid] {pos} is out of grid bounds!");
-            return default;
-        }
-
-        if (grid.TryGetValue(pos, out T value))
-        {
-            return value;
-        }
-
-        Debug.LogWarning($"[Grid] No value found at position: {pos}");
+        if (!IsOnGrid(pos)) return default;
+        if (grid.TryGetValue(pos, out T value)) return value;
         return default;
     }
 
 
     public void SetValue(Vector3Int pos, T value)
     {
-        if (!IsOnGrid(pos))
-        {
-            Debug.LogWarning($"[Grid] {pos} is out of grid bounds!");
-            return;
-        }
+        if (!IsOnGrid(pos)) return;
         grid[pos] = value;
     }
 
