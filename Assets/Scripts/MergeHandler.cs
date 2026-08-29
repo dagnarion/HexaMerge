@@ -10,18 +10,45 @@ public class MergeHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        dragHandler.OnPlaced += Merge;
+        dragHandler.OnPlaced += MergeLoop;
     }
 
     private void OnDisable()
     {
-        dragHandler.OnPlaced -= Merge;
+        dragHandler.OnPlaced -= MergeLoop;
     }
 
-    private void Merge(Vector3Int currentPos)
+    private void MergeLoop(Vector3Int currentPos)
     {
-        List<Slot> slots = GetSlotCanMerge(currentPos); // tap dinh
-        Slot currentSlot = grid.GetValue(currentPos);
+        Queue<Slot> queue = new Queue<Slot>();
+        HashSet<Slot> queued = new HashSet<Slot>();
+        Slot startSlot = grid.GetValue(currentPos);
+        queue.Enqueue(startSlot);
+        queued.Add(startSlot);
+        while (queue.Count > 0)
+        {
+            Slot currentSlot = queue.Dequeue();
+            queued.Remove(currentSlot);
+            List<Slot> changedSlot = Merge(currentSlot);
+           bool cleared = ClearStack(currentSlot);
+           if(cleared && !currentSlot.CanPlaced) changedSlot.Add(currentSlot); 
+            foreach (Slot slot in changedSlot)
+            {
+                if(slot == null) continue;
+                if (queued.Add(slot))
+                {
+                    queue.Enqueue(slot);
+                }
+            }
+            
+        }
+    }
+
+    private List<Slot> Merge(Slot startslot)
+    {
+        List<Slot> slots = GetSlotCanMerge(gridController.ConvertWorldPositionToCellPosition(startslot.transform.position)); // tap dinh
+        List<Slot> changedSlot = new List<Slot>();
+        Slot currentSlot = startslot;
         foreach (Slot slot in slots)
         {
             if(slot == currentSlot) continue;
@@ -34,9 +61,43 @@ public class MergeHandler : MonoBehaviour
                 cellStack.transform.SetParent(null);
                 cellStack.gameObject.SetActive(false);
             }   
+            else changedSlot.Add(slot);
         }
-                
+
+        return changedSlot;
     }
+
+    private bool ClearStack(Slot slot)
+    {
+        if(slot == null || slot.CanPlaced == null || slot.CellStack.IsEmpty()) return false;
+        int cnt = 1;
+        CellStack stack = slot.CellStack;
+        for (int i = stack.GetStackSize() - 1; i > 0; i--)
+        {
+            if (stack.GetCell(i).color != stack.GetCell(i - 1).color) break;
+            else cnt++;
+        }
+
+        if (cnt < 10) return false;
+        while (cnt != 0)
+        {
+            Cell cell = stack.GetCell(stack.GetStackSize()-1);
+            stack.Remove(stack.GetStackSize()-1);
+            cell.transform.SetParent(null);
+            cell.gameObject.SetActive(false);
+            cnt--;
+        }
+
+        if (stack.IsEmpty())
+        {
+            slot.SetCellStack(null);
+            stack.transform.SetParent(null);
+            stack.gameObject.SetActive(false);
+        }
+
+        return true;
+    }
+    
 
     private void TransferCellBetweenTwoStack(CellStack currentStack,CellStack targetStack)
     {
@@ -64,6 +125,7 @@ public class MergeHandler : MonoBehaviour
     private void FloodFill(Vector3Int currentPosition, Slot oldSlot, List<Slot> slotHolder)
     {
         Slot currentSlot = grid.GetValue(currentPosition);
+        if (currentSlot.CanPlaced) return;
         if (currentSlot.CellStack.GetCell(currentSlot.CellStack.GetStackSize() - 1).color !=
             oldSlot.CellStack.GetCell(oldSlot.CellStack.GetStackSize() - 1).color) return;
         slotHolder.Add(currentSlot);
